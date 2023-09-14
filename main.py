@@ -408,7 +408,7 @@ def create_menu():
     colorMenu = Menu(menu, tearoff=0)
     menu.add_cascade(label="Zmień kolory", menu=colorMenu)
     infoMenu = Menu(menu, tearoff=0)
-    menu.add_cascade(label='Info', menu=infoMenu)
+    menu.add_cascade(label='Wybierz pokemona', menu=infoMenu)
 
     colorMenu.add_command(label="Napisu \"Powinno być\" (domyślnie: granatowy)", command=change_color_labels)
     colorMenu.add_command(label="Tła informacji (domyślnie: czarny)", command=change_color_label_background)
@@ -421,7 +421,7 @@ def create_menu():
     colorMenu.add_command(label="Zapisz ustawienia", command=save_settings)
     colorMenu.add_command(label="Przywróć domyślne ustawienia", command=set_colors_default)
 
-    infoMenu.add_command(label='Pokemon', command=pokemon)
+    infoMenu.add_command(label='Informacje o pokemonie', command=pokemon)
 
 
 def delete_all():
