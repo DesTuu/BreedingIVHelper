@@ -390,7 +390,7 @@ def set_colors_default():
 
 
 def save_settings():
-    with open_urls('settings.txt', 'w') as f:
+    with open('settings.txt', 'w') as f:
         f.write(
             f"{color_label_background}, {color_background}, {color_ok}, {color_nok}, "
             f"{color_labels}, {color_optionMenu_background}, {color_optionMenu_fg}")
