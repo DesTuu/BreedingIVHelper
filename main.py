@@ -17,13 +17,13 @@ with open('settings.txt', 'r') as f:
     settings_list = f.read().split(", ")
 
 try:
-    color_label_background = settings_list[0]
-    color_background = settings_list[1]
-    color_ok = settings_list[2]
-    color_nok = settings_list[3]
-    color_labels = settings_list[4]
-    color_optionMenu_background = settings_list[5]
-    color_optionMenu_fg = settings_list[6]
+    color_label_background = settings_list[0] if settings_list[0] else 'black'
+    color_background = settings_list[1] if settings_list[1] else 'white'
+    color_ok = settings_list[2] if settings_list[2] else 'green'
+    color_nok = settings_list[3] if settings_list[3] else 'red'
+    color_labels = settings_list[4] if settings_list[4] else "#001861"
+    color_optionMenu_background = settings_list[5] if settings_list[5] else "white"
+    color_optionMenu_fg = settings_list[6] if settings_list[6] else "black"
 except:
     color_label_background = 'black'
     color_background = 'white'
@@ -586,5 +586,3 @@ if __name__ == "__main__":
     window.mainloop()
 
     save_settings()
-
-# instrukcja do poka att/sp att, ranbon od tylu
