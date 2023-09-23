@@ -1,1 +1,1 @@
-black, white, green, red, #001861, white, black
+black, white, green, red, #001861, white, black, True

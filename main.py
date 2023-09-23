@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import colorchooser, messagebox
 import requests
 import webbrowser
+from breeding import *
 
 var = False
 att_or_spa = ""
@@ -24,6 +25,8 @@ try:
     color_labels = settings_list[4] if settings_list[4] else "#001861"
     color_optionMenu_background = settings_list[5] if settings_list[5] else "white"
     color_optionMenu_fg = settings_list[6] if settings_list[6] else "black"
+    tutorial_label = settings_list[7] if str(settings_list[7]) else True
+    tutorial_label = False if tutorial_label == 'False' else True
 except:
     color_label_background = 'black'
     color_background = 'white'
@@ -32,6 +35,7 @@ except:
     color_labels = "#001861"
     color_optionMenu_background = "white"
     color_optionMenu_fg = "black"
+    tutorial_label = True
 
 
 def option_selected(*args, idx):
@@ -397,7 +401,7 @@ def save_settings():
     with open('settings.txt', 'w') as f:
         f.write(
             f"{color_label_background}, {color_background}, {color_ok}, {color_nok}, "
-            f"{color_labels}, {color_optionMenu_background}, {color_optionMenu_fg}")
+            f"{color_labels}, {color_optionMenu_background}, {color_optionMenu_fg}, {str(tutorial_label)}")
 
 
 def show_warning():
@@ -412,8 +416,15 @@ def create_menu():
 
     colorMenu = Menu(menu, tearoff=0)
     menu.add_cascade(label="Zmień kolory", menu=colorMenu)
+
     infoMenu = Menu(menu, tearoff=0)
     menu.add_cascade(label='Wybierz pokemona', menu=infoMenu)
+
+    breedingMenu = Menu(menu, tearoff=0)
+    menu.add_cascade(label='Breedowanie', menu=breedingMenu)
+
+    optionsMenu = Menu(menu, tearoff=0)
+    menu.add_cascade(label='Ustawienia', menu=optionsMenu)
 
     colorMenu.add_command(label="Napisu \"Powinno być\" (domyślnie: granatowy)", command=change_color_labels)
     colorMenu.add_command(label="Tła informacji (domyślnie: czarny)", command=change_color_label_background)
@@ -423,10 +434,14 @@ def create_menu():
     colorMenu.add_command(label="Tekstu jeśli OK (domyślnie: zielony)", command=change_color_ok)
     colorMenu.add_command(label="Tekstu jeśli NOK (domyślnie: czerwony)", command=change_color_nok)
     colorMenu.add_separator()
-    colorMenu.add_command(label="Zapisz ustawienia", command=save_settings)
     colorMenu.add_command(label="Przywróć domyślne ustawienia", command=set_colors_default)
 
     infoMenu.add_command(label='Informacje o pokemonie', command=pokemon)
+
+    breedingMenu.add_command(label='Poradniki', command=breeding)
+
+    optionsMenu.add_command(label='Usuń napis początkowy', command=delete_first_label)
+    optionsMenu.add_command(label='Przywróć napis początkowy', command=recover_first_label)
 
 
 def delete_all():
@@ -540,6 +555,15 @@ def pokemon():
     button = Button(pokemon_window, text="Wyszukaj", command=submit, font=("Consolas", 12))
     button.pack()
 
+def delete_first_label():
+    global tutorial_label
+    label_question.destroy()
+    tutorial_label = False
+
+def recover_first_label():
+    global tutorial_label
+    tutorial_label = True
+    messagebox.showinfo(title="Informacja", message="Napis pojawi się po ponownym włączeniu programu! :)")
 
 if __name__ == "__main__":
     window = Tk()
@@ -547,27 +571,25 @@ if __name__ == "__main__":
     window.title("IV Helper")
     window.config(bg=color_background)
 
-    title_image = PhotoImage(file="images.png")
-    window.iconphoto(True, title_image)
-
     create_menu()
 
     frame = Frame(window, bg=color_background)
     frame.pack()
 
-    label_question = Label(frame,
-                           font=("Arial Black", 20, "bold"),
-                           fg=color_background,
-                           bg=color_label_background,
-                           text="""Klikając na pustą budkę na dole wybierasz statystykę, w której masz 1x31 w IV.
-    Wyświetli na zielono = OK, Wyświetli na czerwono = NOK.
-    Aplikacja uwzględnia tylko i wyłącznie używanie braców na każdym poku.
-    Nie bierze pod uwagę breedowania natury, która powinna być dodawana na samym końcu.
-    Nie bierze pod uwagę również płci.
-    By zrobić 5x31 poka z naturą należy zrobić pierw 5x31 bez natury, potem 4x31 bez natury itd.
-    Wyjątkiem jest jeśli wyjdzie odpowiednia natura przy breedzie minimum 3x31 IV""")
+    if tutorial_label:
+        label_question = Label(frame,
+                               font=("Arial Black", 20, "bold"),
+                               fg=color_background,
+                               bg=color_label_background,
+                               text="""Klikając na pustą budkę na dole wybierasz statystykę, w której masz 1x31 w IV.
+        Wyświetli na zielono = OK, Wyświetli na czerwono = NOK.
+        Aplikacja uwzględnia tylko i wyłącznie używanie braców na każdym poku.
+        Nie bierze pod uwagę breedowania natury, która powinna być dodawana na samym końcu.
+        Nie bierze pod uwagę również płci.
+        By zrobić 5x31 poka z naturą należy zrobić pierw 5x31 bez natury, potem 4x31 bez natury itd.
+        Wyjątkiem jest jeśli wyjdzie odpowiednia natura przy breedzie minimum 3x31 IV""")
 
-    label_question.grid(pady=30, row=0, column=0, columnspan=18)
+        label_question.grid(pady=30, row=0, column=0, columnspan=18)
 
     create_option_menu(1, 1, 14, 5)
     for i in range(2):
